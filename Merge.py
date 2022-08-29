@@ -24,7 +24,7 @@ print('Starting clipping...')
 print('Getting the image file...')
 src_raster_path = glob.glob('*.tif')[0]
 print('Getting the mask file...')
-shp_file_path = "Mask.shp"
+shp_file_path = glob.glob('*.shp')[0]
 print('Creating the output file name...')
 output_raster_path = src_raster_path[:-3] + '_masked.tif'
 print('Opening the mask file... ')
