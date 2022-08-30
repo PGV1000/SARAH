@@ -28,7 +28,7 @@ src_raster_path = glob.glob('*.tif')[0]
 print('Getting the mask file...')
 shp_file_path = glob.glob('*.shp')[0]
 print('Creating the output file name...')
-output_raster_path = src_raster_path[:-3] + '_masked.tif'
+output_raster_path = 'Masked_' + src_raster_path
 print('Opening the mask file... ')
 with fiona.open(shp_file_path, "r") as shapefile:
     shapes = [feature["geometry"] for feature in shapefile]
