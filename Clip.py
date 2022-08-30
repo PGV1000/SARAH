@@ -13,7 +13,9 @@
 # # Clip an image with "Mask.shp" and return "Masked.tif"
 # maskedImage = gdal.Warp("Masked.tif", image, cutlineDSName = 'Mask.shp', cropToCutline = True, dstNodata = np.nan)
 # image = maskedImage = None
-
+import os
+os.environ['PROJ_LIB'] = 'C:\OSGeo4W\share\proj'
+os.environ['GDAL_DATA'] = 'C:\OSGeo4W\apps\gdal\share\gdal'
 import fiona
 import rasterio
 import rasterio.mask
@@ -44,3 +46,4 @@ out_meta.update({"driver": "GTiff",
 print('Saving the output file...')
 with rasterio.open(output_raster_path, "w", **out_meta) as dest:
     dest.write(out_image)
+print('Done')
