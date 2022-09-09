@@ -4,6 +4,7 @@ FIlter/
 Format/
 Equalize/
 Polygonize/
+Buffer/
 Equalize.py
 Merge.py
 Format.py

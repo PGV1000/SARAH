@@ -47,10 +47,10 @@ print('Getting the filtered image...')
 dataset = glob.glob('.\Filter\Filtered_*.tif')
 print(dataset)
 
-# img = gdal.Open(dataset[0])
-# print('Setting projection...')
-# img.SetProjection(proj)
-# print('Setting geotransforms...')
-# img.SetGeoTransform(gt)
-# img = None
+img = gdal.Open(dataset[0])
+print('Setting projection...')
+img.SetProjection(proj)
+print('Setting geotransforms...')
+img.SetGeoTransform(gt)
+img = None
 # #############
