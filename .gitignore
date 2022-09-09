@@ -1,4 +1,9 @@
 Clip/
 Merge/
 FIlter/
+Format/
+Equalize/
+Polygonize/
+Equalize.py
 Merge.py
+Format.py
