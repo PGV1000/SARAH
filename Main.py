@@ -31,9 +31,9 @@ def main():
                 break
             elif isBuffer=='n'or isBuffer=='N':
                 print('Skipping buffering process...')
+                break
             else:
                 print("The input is not correct")   
-                break   
         except ValueError:
             print("Invalid")
             continue
