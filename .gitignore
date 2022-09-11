@@ -5,6 +5,11 @@ Format/
 Equalize/
 Polygonize/
 Buffer/
+BinMask/
+Input/
+Output/
+Mask/
+__pycache__/
 Equalize.py
 Merge.py
 Format.py
