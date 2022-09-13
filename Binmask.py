@@ -3,21 +3,19 @@ os.environ['PROJ_LIB'] = 'C:\OSGeo4W\share\proj'
 os.environ['GDAL_DATA'] = 'C:\OSGeo4W\apps\gdal\share\gdal'
 import rasterio
 import rasterio.mask
-import glob
 from osgeo import gdal
 from rasterio.features import sieve
 # import numpy as np
-def BinMask():
+def BinMask(input_raster_path):
     print('Creating BinMask...')
 
     print('Getting the image file...')
-    src_raster_path = glob.glob('.\Input\*.tif')[0]
-    print(src_raster_path)
+    print(input_raster_path)
     print('Creating the output file name...')
     output_raster_path = '.\BinMask\BinMask.tif'
     print(output_raster_path)
 
-    img = gdal.Open(src_raster_path)
+    img = gdal.Open(input_raster_path)
     nodata = 0
     # # proj = img.GetProjection()
     # gt = img.GetGeoTransform()
@@ -28,7 +26,7 @@ def BinMask():
     img = None
 
 
-    src = rasterio.open(src_raster_path)
+    src = rasterio.open(input_raster_path)
     rasterArray = src.read()
 
     print('Peek: ', rasterArray)
@@ -63,3 +61,5 @@ def BinMask():
 
     with rasterio.open(output_raster_path,'w',**profile) as dst: 
         dst.write(sieved_msk,1) # (np.array, number of bands?)
+
+    
