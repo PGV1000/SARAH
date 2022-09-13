@@ -6,7 +6,7 @@ import glob
 from osgeo import ogr, osr
 
 
-def Buffer():
+def Buffer(input_raster_path):
     bufferDistance = float(input("Enter buffer distance (Press 'Enter' to apply default value: -0.01): ") or '-0.01') 
     print('Starting buffering...')
 
@@ -81,7 +81,7 @@ def Buffer():
         print ("Creating field failed.\n")
         sys.exit( 1 )
 
-    name = glob.glob(".\Input\*tif")[0] # значение атрибута
+    name = input_raster_path # значение атрибута
     feat = ogr.Feature( layer.GetLayerDefn() ) # создаем OGRFeature
     feat.SetField( "FileName", name ) # устанавливаем атрибут
     
