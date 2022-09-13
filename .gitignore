@@ -9,6 +9,9 @@ BinMask/
 Input/
 Output/
 Mask/
+Reproject/
+dist/
+build/
 __pycache__/
 Equalize.py
 Merge.py
