@@ -1,10 +1,18 @@
 import os
-os.environ['PROJ_LIB'] = 'C:\OSGeo4W\share\proj'
-os.environ['GDAL_DATA'] = 'C:\OSGeo4W\apps\gdal\share\gdal'
 import rasterio
 import rasterio.mask
 from osgeo import gdal
 from rasterio.features import sieve
+
+from configparser import ConfigParser
+config = ConfigParser()
+config.read('config.ini')
+projLibPath = config['PATHS']['proj_lib']
+gdalDataPath = config['PATHS']['gdal_data']
+os.environ['PROJ_LIB'] = projLibPath
+os.environ['GDAL_DATA'] = gdalDataPath
+
+
 # import numpy as np
 def BinMask(input_raster_path):
     print('Creating BinMask...')
@@ -61,5 +69,8 @@ def BinMask(input_raster_path):
 
     with rasterio.open(output_raster_path,'w',**profile) as dst: 
         dst.write(sieved_msk,1) # (np.array, number of bands?)
+    sieved_msk = None
+    msk = None
+    src = None
 
     

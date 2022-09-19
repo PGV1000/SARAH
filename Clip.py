@@ -1,11 +1,19 @@
+
+import pathlib
 import os
-os.environ['PROJ_LIB'] = 'C:\OSGeo4W\share\proj'
-os.environ['GDAL_DATA'] = 'C:\OSGeo4W\apps\gdal\share\gdal'
 import fiona
 import rasterio
 import rasterio.mask
 
-def Clip(input_raster_path,maskPath,outputRasterPath):
+from configparser import ConfigParser
+config = ConfigParser()
+config.read('config.ini')
+projLibPath = config['PATHS']['proj_lib']
+gdalDataPath = config['PATHS']['gdal_data']
+os.environ['PROJ_LIB'] = projLibPath
+os.environ['GDAL_DATA'] = gdalDataPath
+
+def Clip(input_raster_path,maskPath):
     print('Starting clipping...')
 
     print('Getting the image file...')
@@ -18,7 +26,7 @@ def Clip(input_raster_path,maskPath,outputRasterPath):
         outputRasterPath = input_raster_path
     else:
         print('Creating the output file name...')
-        
+        outputRasterPath = './Clip/Clip'+  pathlib.Path(input_raster_path).suffix
 
     print('Opening the mask file... ')
     with fiona.open(shp_file_path, "r") as shapefile:
