@@ -1,6 +1,6 @@
 import os
 from osgeo import gdal
-import pathlib
+import glob
 
 from configparser import ConfigParser
 config = ConfigParser()
@@ -13,10 +13,10 @@ os.environ['GDAL_DATA'] = gdalDataPath
 def Reproject(inputRasterPath):
 
     inputRaster = gdal.Open(inputRasterPath)
-    outputRasterPath =  "./Reproject/Reproject" + pathlib.Path(inputRasterPath).suffix
+    outputRasterPath =  './Reproject/Reproject.tiff' #+ os.path.basename(glob.glob('./Input/*.tif*')[0])
     print(inputRaster.GetGeoTransform())
     print(inputRaster.GetProjection())
 
 
-    gdal.Warp(outputRasterPath,inputRaster, dstSRS = 'EPSG:4326')
+    gdal.Warp(outputRasterPath,inputRaster, dstSRS = 'EPSG:4326', format = 'GTiff', dstNodata = 0 ) #format = 'GTiff', dstNodata = 0
     inputRaster = None

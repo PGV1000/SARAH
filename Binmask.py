@@ -1,8 +1,11 @@
 import os
+import glob
 import rasterio
 import rasterio.mask
+import NoDataZero
 from osgeo import gdal
 from rasterio.features import sieve
+
 
 from configparser import ConfigParser
 config = ConfigParser()
@@ -14,28 +17,50 @@ os.environ['GDAL_DATA'] = gdalDataPath
 
 
 # import numpy as np
-def BinMask(input_raster_path):
+def BinMask(inputRasterPath):
+    print('------------Binmask------------')
     print('Creating BinMask...')
-
     print('Getting the image file...')
-    print(input_raster_path)
+    print(inputRasterPath)
     print('Creating the output file name...')
-    output_raster_path = '.\BinMask\BinMask.tif'
-    print(output_raster_path)
+    outputRasterPath = '.\BinMask\BinMask.tiff'
+    print(outputRasterPath)
 
-    img = gdal.Open(input_raster_path)
-    nodata = 0
-    # # proj = img.GetProjection()
-    # gt = img.GetGeoTransform()
-    for i in range(1, img.RasterCount + 1):
-    # #     # set the nodata value of the band
-        img.GetRasterBand(1).SetNoDataValue(nodata)
-    # # unlink the file object and save the results
+    originalRaster = rasterio.open(glob.glob('./Input/*.tif*')[0])
+    originalRasterArray = originalRaster.read()
+
+    if originalRaster.dtypes[0]== 'uint16' and 65535 in originalRasterArray:
+        NoDataZero.NoDataZero(inputRasterPath)
+    originalRaster.close()
+    originalRasterArray = None
+
+    src = rasterio.open(inputRasterPath)
+    rasterArray = src.read()
+    
+    img = gdal.Open(inputRasterPath, 1) #1 means editing mode
+    if src.dtypes[0]== 'uint16' or src.dtypes[0]=='uint8':
+        print('Setting nodata to 0...')
+        nodata = 0
+        # # proj = img.GetProjection()
+        # gt = img.GetGeoTransform()
+        for i in range(1, img.RasterCount + 1):
+        # #     # set the nodata value of the band
+            img.GetRasterBand(i).SetNoDataValue(0)
+        # # unlink the file object and save the results
+    elif src.dtypes[0]=='float32':
+        print('Setting nodata to -9999...')
+        nodata = -9999
+        # # proj = img.GetProjection()
+        # gt = img.GetGeoTransform()
+        for i in range(1, img.RasterCount + 1):
+        # #     # set the nodata value of the band
+            img.GetRasterBand(i).SetNoDataValue(-9999)
+        # # unlink the file object and save the results
     img = None
 
 
-    src = rasterio.open(input_raster_path)
-    rasterArray = src.read()
+    
+    
 
     print('Peek: ', rasterArray)
     print('Size: ',src.shape)
@@ -54,23 +79,14 @@ def BinMask(input_raster_path):
     sieved_msk = sieve(msk, size=800)
     print('Sieved Mask peek: ',sieved_msk)
 
-    profile = {
-    'driver': 'GTiff', 
-    'dtype': src.dtypes[0], # np.uint8, np.uint16 etc.
-    'nodata': 0, 
-    'width': src.shape[1], 
-    'height': src.shape[0],
-    'count': 1, # bands count
-    'crs': src.crs, 
-    'transform': src.transform, 
-    'tiled': False,
-    'compress': None,
-    }
+    profile = src.profile
+    profile.update({'nodata': nodata})
 
-    with rasterio.open(output_raster_path,'w',**profile) as dst: 
+    with rasterio.open(outputRasterPath,'w+',**profile) as dst: 
         dst.write(sieved_msk,1) # (np.array, number of bands?)
     sieved_msk = None
     msk = None
     src = None
+    rasterArray = None 
 
     

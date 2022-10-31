@@ -12,8 +12,7 @@ os.environ['PROJ_LIB'] = projLibPath
 os.environ['GDAL_DATA'] = gdalDataPath
 
 
-def Buffer(input_raster_path):
-    bufferDistance = float(input("Enter buffer distance (Press 'Enter' to apply default value: -0.01): ") or '-0.01') 
+def Buffer(input_raster_path, bufferDistance):
     print('Starting buffering...')
 
     print('Getting the shape file...')

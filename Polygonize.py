@@ -10,7 +10,7 @@ os.environ['PROJ_LIB'] = projLibPath
 os.environ['GDAL_DATA'] = gdalDataPath
 
 def Polygonize():
-    output = gdal.Open('.\BinMask\BinMask.tif')
+    output = gdal.Open('.\BinMask\BinMask.tiff')
     outband = output.GetRasterBand(1)
 
     srs  = osr.SpatialReference()
