@@ -12,7 +12,15 @@ Mask/
 Reproject/
 dist/
 build/
+AddValue/
 __pycache__/
 Equalize.py
 Merge.py
 Format.py
+AddValue.py
+CopyGeoTransform.py
+GaussianFilter.py
+Test.py
+LeeFilter.py
+GF3_SYC_NSC_031854_E144_9_N51_4_20220828_L1A_VHVV_L10006708487.tif
+result2.tif
